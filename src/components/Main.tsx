@@ -216,7 +216,7 @@ export class Main extends React.Component<Props, State> {
     const anyWindow = window as any
     const DOMURL = anyWindow.URL || anyWindow.webkitURL || window
 
-    const data = svgNode.outerHTML
+    const data = (svgNode as any).outerHTML
     const img = new Image()
     const svg = new Blob([data], { type: 'image/svg+xml' })
     const url = DOMURL.createObjectURL(svg)
@@ -236,7 +236,7 @@ export class Main extends React.Component<Props, State> {
 
   private onDownloadSVG = () => {
     const svgNode = ReactDOM.findDOMNode(this.avatarRef!)
-    const data = svgNode.outerHTML
+    const data = (svgNode as any).outerHTML
     const svg = new Blob([data], { type: 'image/svg+xml' })
     this.triggerDownload(svg, 'avataaars.svg')
   }
