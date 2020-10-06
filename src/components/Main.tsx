@@ -269,10 +269,7 @@ export class Main extends React.Component<Props, State> {
       .filter(key => key.match(/^(?!on).*/g)) // only the properties that are not methods
       .map(key => key + '=' + avatarParams[key])
     console.log(filtered.join('&'))
-    const postParams = JSON.stringify({
-      action: 'change_avatar_from_generator',
-      ...avatarParams
-    })
+    const postParams = JSON.stringify(avatarParams)
     // ajax call to my-action
     if (callBackUrl) {
       let url = decodeURIComponent(callBackUrl.replace(/\+/g, ' '))
