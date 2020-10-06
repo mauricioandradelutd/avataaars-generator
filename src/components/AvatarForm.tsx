@@ -64,6 +64,7 @@ export interface Props {
   onAvatarStyleChange?: (avatarStyle: AvatarStyle) => void
   onToggleCode?: () => void
   onToggleImg?: () => void
+  onSendToWP?: () => void
 }
 
 export default class AvatarForm extends React.Component<Props> {
@@ -147,6 +148,7 @@ export default class AvatarForm extends React.Component<Props> {
               subscribe for updates
             </a>
           </Col>
+          {/* this probably needs to go */}
         </FormGroup>
         <FormGroup className='row'>
           <Col
@@ -178,6 +180,13 @@ export default class AvatarForm extends React.Component<Props> {
               onClick={this.onToggleImg}>
               <i className='fa fa-code' />{' '}
               {displayingImg ? 'Hide <img>' : 'Show <img>'}
+            </Button>{' '}
+            <Button
+              bsStyle='secondary'
+              type='submit'
+              onClick={this.onSendToWP}>
+              <i className='fa fa-wordpress' />{' '}
+              {'Save to WordPress'}
             </Button>
             <div style={{ marginTop: '10px' }}>
               <iframe
@@ -239,6 +248,13 @@ export default class AvatarForm extends React.Component<Props> {
     event.preventDefault()
     if (this.props.onToggleImg) {
       this.props.onToggleImg()
+    }
+  }
+
+  private onSendToWP = (event: React.FormEvent<FormControl>) => {
+    event.preventDefault()
+    if (this.props.onSendToWP) {
+      this.props.onSendToWP()
     }
   }
 }
