@@ -2,6 +2,7 @@
   "name": "avataaars-generator",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://dailyaudiobible.test/wp-content/plugins/avatar-generator/app/",
   "dependencies": {
     "avataaars": "^1.1.0",
     "bootstrap": ">=4.1.2",
