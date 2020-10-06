@@ -18,9 +18,14 @@ import AvatarForm from './AvatarForm'
 import ComponentCode from './ComponentCode'
 import ComponentImg from './ComponentImg'
 
+// const Cookies = require('js-cookie')
+// const cookies = Cookies.get()
+
 interface Props {
   __render__?: string
   avatarStyle: AvatarStyle
+  token?: string
+  callBackUrl?: string
   onChangeUrlQueryParams: (params: any, updateType: string) => void
   onChangeAvatarStyle: (avatarStyle: AvatarStyle) => void
 }
@@ -36,6 +41,14 @@ const urlPropsQueryConfig = {
       }
     ])
   ),
+  token: {
+    type: UrlQueryParamTypes.string,
+    queryParam: 'token'
+  },
+  callBackUrl: {
+    type: UrlQueryParamTypes.string,
+    queryParam: 'callback_url'
+  },
   avatarStyle: {
     type: UrlQueryParamTypes.string,
     updateType
@@ -140,6 +153,7 @@ export class Main extends React.Component<Props, State> {
           onAvatarStyleChange={this.onAvatarStyleChange}
           onToggleCode={this.onToggleCode}
           onToggleImg={this.onToggleImg}
+          onSendToWP={this.onSendToWP}
         />
         {displayComponentImg ? (
           <ComponentImg avatarStyle={avatarStyle} />
@@ -183,7 +197,9 @@ export class Main extends React.Component<Props, State> {
   private onRandom = () => {
     const { optionContext } = this
     let values: { [index: string]: string } = {
-      avatarStyle: this.props.avatarStyle
+      avatarStyle: this.props.avatarStyle,
+      token: this.props.token,
+      callBackUrl: this.props.callBackUrl
     }
 
     for (const option of optionContext.options) {
@@ -208,6 +224,7 @@ export class Main extends React.Component<Props, State> {
   }
 
   private onDownloadPNG = () => {
+    // here we need to send the image to WP
     const svgNode = ReactDOM.findDOMNode(this.avatarRef!)
     const canvas = this.canvasRef!
     const ctx = canvas.getContext('2d')!
@@ -243,6 +260,41 @@ export class Main extends React.Component<Props, State> {
 
   private triggerDownload (imageBlob: Blob, fileName: string) {
     FileSaver.saveAs(imageBlob, fileName)
+  }
+
+  private onSendToWP = () => {
+    // send ajax call to WP
+    const { callBackUrl, token, ...avatarParams } = this.props
+    let filtered = Object.keys(avatarParams)
+      .filter(key => key.match(/^(?!on).*/g)) // only the properties that are not methods
+      .map(key => key + '=' + avatarParams[key])
+    console.log(filtered.join('&'))
+    const postParams = JSON.stringify({
+      action: 'change_avatar_from_generator',
+      ...avatarParams
+    })
+    // ajax call to my-action
+    if (callBackUrl) {
+      let url = decodeURIComponent(callBackUrl.replace(/\+/g, ' '))
+      fetch(url, {
+        method: 'POST',
+        mode: 'same-origin',
+        credentials: 'include',
+        referrerPolicy: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: postParams
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data)
+        })
+        .catch((error) => {
+          console.error('Error:', error)
+        })
+    }
   }
 
   private onToggleCode = () => {
