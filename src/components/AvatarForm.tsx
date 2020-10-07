@@ -17,15 +17,15 @@ interface SelectProps {
 }
 
 // ref: https://stackoverflow.com/a/1714899/25077
-const serializeQuery = function (obj: any) {
-  const str = []
-  for (const p in obj) {
-    if (obj.hasOwnProperty(p)) {
-      str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]))
-    }
-  }
-  return str.join('&')
-}
+// const serializeQuery = function (obj: any) {
+//   const str = []
+//   for (const p in obj) {
+//     if (obj.hasOwnProperty(p)) {
+//       str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]))
+//     }
+//   }
+//   return str.join('&')
+// }
 
 class OptionSelect extends React.Component<SelectProps> {
   render () {
@@ -35,7 +35,7 @@ class OptionSelect extends React.Component<SelectProps> {
         <Col componentClass={ControlLabel} sm={3}>
           {label}
         </Col>
-        <Col sm={9}>
+        <Col sm={6}>
           <FormControl
             componentClass='select'
             value={value}
@@ -81,7 +81,7 @@ export default class AvatarForm extends React.Component<Props> {
   }
 
   render () {
-    const { optionContext, avatarStyle, displayingImg, displayingCode } = this.props
+    const { optionContext, avatarStyle } = this.props
     const selects = optionContext.options.map((option, index) => {
       const optionState = optionContext.getOptionState(option.key)!
       if (optionState.available <= 0) {
@@ -105,14 +105,14 @@ export default class AvatarForm extends React.Component<Props> {
       )
     })
     const labelCol = 3
-    const inputCol = 9
+    const inputCol = 6
     return (
       <Form horizontal>
         <FormGroup className='row' controlId='avatar-style'>
           <Col componentClass={ControlLabel} sm={3}>
             Avatar Style
           </Col>
-          <Col sm={9}>
+          <Col sm={6}>
             <label>
               <input
                 type='radio'
@@ -138,7 +138,7 @@ export default class AvatarForm extends React.Component<Props> {
           </Col>
         </FormGroup>
         {selects}
-        <FormGroup className='row'>
+        {/* <FormGroup className='row'>
           <Col
             className={`offset-sm-${labelCol}`}
             smOffset={labelCol}
@@ -148,39 +148,38 @@ export default class AvatarForm extends React.Component<Props> {
               subscribe for updates
             </a>
           </Col>
-          {/* this probably needs to go */}
-        </FormGroup>
+        </FormGroup> */}
         <FormGroup className='row'>
           <Col
             className={'offset-sm-' + labelCol}
             smOffset={labelCol}
             sm={inputCol}>
-            <Button
+            {/* <Button
               bsStyle='primary'
               type='submit'
               onClick={this.onDownloadPNG}>
               <i className='fa fa-download' /> PNG
-            </Button>{' '}
-            <Button
+            </Button> */}
+            {/* <Button
               bsStyle='secondary'
               type='submit'
               onClick={this.onDownloadSVG}>
               <i className='fa fa-download' /> SVG
-            </Button>{' '}
-            <Button
+            </Button> */}
+            {/* <Button
               bsStyle='secondary'
               type='submit'
               onClick={this.onToggleCode}>
               <i className='fa fa-code' />{' '}
               {displayingCode ? 'Hide React' : 'Show React'}
-            </Button>{' '}
-            <Button
+            </Button> */}
+            {/* <Button
               bsStyle='secondary'
               type='submit'
               onClick={this.onToggleImg}>
               <i className='fa fa-code' />{' '}
               {displayingImg ? 'Hide <img>' : 'Show <img>'}
-            </Button>{' '}
+            </Button> */}
             <Button
               bsStyle='secondary'
               type='submit'
@@ -188,7 +187,7 @@ export default class AvatarForm extends React.Component<Props> {
               <i className='fa fa-wordpress' />{' '}
               {'Save to WordPress'}
             </Button>
-            <div style={{ marginTop: '10px' }}>
+            {/* <div style={{ marginTop: '10px' }}>
               <iframe
                 src={
                   'https://platform.twitter.com/widgets/tweet_button.html?' +
@@ -205,7 +204,7 @@ export default class AvatarForm extends React.Component<Props> {
                 title='Twitter Tweet Button'
                 style={{ border: 0, overflow: 'hidden' }}
               />
-            </div>
+            </div> */}
           </Col>
         </FormGroup>
       </Form>
@@ -223,33 +222,33 @@ export default class AvatarForm extends React.Component<Props> {
     }
   }
 
-  private onDownloadPNG = (event: React.FormEvent<FormControl>) => {
-    event.preventDefault()
-    if (this.props.onDownloadPNG) {
-      this.props.onDownloadPNG()
-    }
-  }
+  // private onDownloadPNG = (event: React.FormEvent<FormControl>) => {
+  //   event.preventDefault()
+  //   if (this.props.onDownloadPNG) {
+  //     this.props.onDownloadPNG()
+  //   }
+  // }
 
-  private onDownloadSVG = (event: React.FormEvent<FormControl>) => {
-    event.preventDefault()
-    if (this.props.onDownloadSVG) {
-      this.props.onDownloadSVG()
-    }
-  }
+  // private onDownloadSVG = (event: React.FormEvent<FormControl>) => {
+  //   event.preventDefault()
+  //   if (this.props.onDownloadSVG) {
+  //     this.props.onDownloadSVG()
+  //   }
+  // }
 
-  private onToggleCode = (event: React.FormEvent<FormControl>) => {
-    event.preventDefault()
-    if (this.props.onToggleCode) {
-      this.props.onToggleCode()
-    }
-  }
+  // private onToggleCode = (event: React.FormEvent<FormControl>) => {
+  //   event.preventDefault()
+  //   if (this.props.onToggleCode) {
+  //     this.props.onToggleCode()
+  //   }
+  // }
 
-  private onToggleImg = (event: React.FormEvent<FormControl>) => {
-    event.preventDefault()
-    if (this.props.onToggleImg) {
-      this.props.onToggleImg()
-    }
-  }
+  // private onToggleImg = (event: React.FormEvent<FormControl>) => {
+  //   event.preventDefault()
+  //   if (this.props.onToggleImg) {
+  //     this.props.onToggleImg()
+  //   }
+  // }
 
   private onSendToWP = (event: React.FormEvent<FormControl>) => {
     event.preventDefault()
