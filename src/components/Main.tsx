@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Avatar, AvatarStyle, OptionContext, allOptions } from 'avataaars'
-import { Button } from 'react-bootstrap'
+import { Button, Row, Col } from 'react-bootstrap'
 import { Helmet } from 'react-helmet'
 import {
   UrlQueryParamTypes,
@@ -15,8 +15,9 @@ import {
 import { fromPairs, sample } from 'lodash'
 
 import AvatarForm from './AvatarForm'
-import ComponentCode from './ComponentCode'
-import ComponentImg from './ComponentImg'
+import { Container } from 'react-bootstrap/lib/Tab'
+// import ComponentCode from './ComponentCode'
+// import ComponentImg from './ComponentImg'
 
 // const Cookies = require('js-cookie')
 // const cookies = Cookies.get()
@@ -140,27 +141,35 @@ export class Main extends React.Component<Props, State> {
           <meta name='twitter:image' content={imageURL} />
           <meta name='twitter:url' content={document.location.href} />
         </Helmet>
-        <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-          <Avatar ref={this.onAvatarRef} avatarStyle={avatarStyle} />
-        </div>
-        <AvatarForm
-          optionContext={this.optionContext}
-          avatarStyle={avatarStyle}
-          displayingCode={displayComponentCode}
-          displayingImg={displayComponentImg}
-          onDownloadPNG={this.onDownloadPNG}
-          onDownloadSVG={this.onDownloadSVG}
-          onAvatarStyleChange={this.onAvatarStyleChange}
-          onToggleCode={this.onToggleCode}
-          onToggleImg={this.onToggleImg}
-          onSendToWP={this.onSendToWP}
-        />
-        {displayComponentImg ? (
+        <Container>
+          <Row>
+            <Col sm={4}>
+              <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                <Avatar ref={this.onAvatarRef} avatarStyle={avatarStyle} />
+              </div>
+            </Col>
+            <Col sm={8}>
+              <AvatarForm
+                optionContext={this.optionContext}
+                avatarStyle={avatarStyle}
+                displayingCode={displayComponentCode}
+                displayingImg={displayComponentImg}
+                onDownloadPNG={this.onDownloadPNG}
+                onDownloadSVG={this.onDownloadSVG}
+                onAvatarStyleChange={this.onAvatarStyleChange}
+                // onToggleCode={this.onToggleCode}
+                // onToggleImg={this.onToggleImg}
+                onSendToWP={this.onSendToWP}
+              />
+            </Col>
+          </Row>
+        </Container>
+        {/* {displayComponentImg ? (
           <ComponentImg avatarStyle={avatarStyle} />
         ) : null}
         {displayComponentCode ? (
           <ComponentCode avatarStyle={avatarStyle} />
-        ) : null}
+        ) : null} */}
         <canvas
           style={{ display: 'none' }}
           width='528'
@@ -265,10 +274,10 @@ export class Main extends React.Component<Props, State> {
   private onSendToWP = () => {
     // send ajax call to WP
     const { callBackUrl, token, ...avatarParams } = this.props
-    let filtered = Object.keys(avatarParams)
-      .filter(key => key.match(/^(?!on).*/g)) // only the properties that are not methods
-      .map(key => key + '=' + avatarParams[key])
-    console.log(filtered.join('&'))
+    // let filtered = Object.keys(avatarParams)
+    //   .filter(key => key.match(/^(?!on).*/g)) // only the properties that are not methods
+    //   .map(key => key + '=' + avatarParams[key])
+    // console.log(filtered.join('&'))
     const postParams = JSON.stringify(avatarParams)
     // ajax call to my-action
     if (callBackUrl) {
@@ -287,6 +296,7 @@ export class Main extends React.Component<Props, State> {
         .then(response => response.json())
         .then(data => {
           console.log('Success:', data)
+          parent.document.getElementById('myModal').style.display = 'none'
         })
         .catch((error) => {
           console.error('Error:', error)
@@ -294,21 +304,21 @@ export class Main extends React.Component<Props, State> {
     }
   }
 
-  private onToggleCode = () => {
-    this.setState(state => ({
-      ...state,
-      displayComponentCode: !state.displayComponentCode,
-      displayComponentImg: false
-    }))
-  }
+  // private onToggleCode = () => {
+  //   this.setState(state => ({
+  //     ...state,
+  //     displayComponentCode: !state.displayComponentCode,
+  //     displayComponentImg: false
+  //   }))
+  // }
 
-  private onToggleImg = () => {
-    this.setState(state => ({
-      ...state,
-      displayComponentImg: !state.displayComponentImg,
-      displayComponentCode: false
-    }))
-  }
+  // private onToggleImg = () => {
+  //   this.setState(state => ({
+  //     ...state,
+  //     displayComponentImg: !state.displayComponentImg,
+  //     displayComponentCode: false
+  //   }))
+  // }
 }
 
 export default addUrlProps({ urlPropsQueryConfig })(Main)
