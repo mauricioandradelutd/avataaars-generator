@@ -39,7 +39,7 @@ export default class ComponentCode extends React.Component<Props> {
     }
     const propsStr = props.join('&')
     const code = `<img src='https://avataaars.io/?avatarStyle=${avatarStyle}&${propsStr}'
-/>`
+/>` // this probably needs to change
     return (
       <div>
         <h3 style={{ color: '#6A39D7' }}>
